@@ -53,7 +53,7 @@ if [ -n "${SSH_USERS}" ]; then
         if [ ! -e "/etc/authorized_keys/${_NAME}" ]; then
             echo "WARNING: No SSH authorized_keys found for ${_NAME}!"
         else
-            chown ${_NAME}:${_NAME} "/etc/authorized_keys/${_NAME}"
+            chown ${_NAME} "/etc/authorized_keys/${_NAME}"
         fi        
     done
 else
