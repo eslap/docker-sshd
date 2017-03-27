@@ -45,6 +45,8 @@ if [ -n "${SSH_USERS}" ]; then
         fi
         addgroup -g ${_GID} ${_NAME}
         adduser -D -u ${_UID} -G ${_NAME} -s '' ${_NAME}
+        # Unlock user (for recent versions of OpenSSL)
+        passwd -u ${_NAME}
     done
 else
     # Warn if no authorized_keys
