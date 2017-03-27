@@ -40,13 +40,21 @@ if [ -n "${SSH_USERS}" ]; then
         _GID=${UA[2]}
 
         echo ">> Adding user ${_NAME} with uid: ${_UID}, gid: ${_GID}."
+        if id "${_NAME}" >/dev/null 2>&1; then
+            echo "User ${_NAME} already exists, no need to create it"
+        else
+            echo "User ${_NAME} doesn't exist, creating it"
+            addgroup -g ${_GID} ${_NAME}
+            adduser -D -u ${_UID} -G ${_NAME} -s '' ${_NAME}
+            # Unlock user (for recent versions of OpenSSL)
+            passwd -u ${_NAME}
+        fi
+        
         if [ ! -e "/etc/authorized_keys/${_NAME}" ]; then
             echo "WARNING: No SSH authorized_keys found for ${_NAME}!"
-        fi
-        addgroup -g ${_GID} ${_NAME}
-        adduser -D -u ${_UID} -G ${_NAME} -s '' ${_NAME}
-        # Unlock user (for recent versions of OpenSSL)
-        passwd -u ${_NAME}
+        else
+            chown ${_NAME}:${_NAME} "/etc/authorized_keys/${_NAME}"
+        fi        
     done
 else
     # Warn if no authorized_keys
