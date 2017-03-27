@@ -25,7 +25,7 @@ if [ -w ~/.ssh/authorized_keys ]; then
     chmod 600 ~/.ssh/authorized_keys
 fi
 if [ -w /etc/authorized_keys ]; then
-    chown root:root /etc/authorized_keys
+    # chown root:root /etc/authorized_keys
     chmod 755 /etc/authorized_keys
     find /etc/authorized_keys/ -type f -exec chmod 644 {} \;
 fi
